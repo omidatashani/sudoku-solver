@@ -1,4 +1,4 @@
-import sys
+import time
 def read_sudoku(file):
     size = int(file.readline())
     n_full_cells = int(file.readline())
@@ -10,7 +10,8 @@ def read_sudoku(file):
 
 def print_sudoku(grid):
     for row in grid:
-        print(' '.join(str(cell) for cell in row))
+        out = "{: >4}" * len(grid)
+        print(out.format(*row))
 
 def is_valid(grid, size, row, col, num):
     for i in range(size):
@@ -32,7 +33,7 @@ def find_unassigned(grid, size):
     return None
 
 def mrv(grid, size):
-    min_remaining, min_pos = sys.maxsize, None
+    min_remaining, min_pos = 9223372036854775807, None
     for row in range(size):
         for col in range(size):
             if grid[row][col] == 0:
@@ -92,10 +93,13 @@ def solve_sudoku(grid, size):
     return False
 
 if __name__ == '__main__':
-    with open('/Users/omid/Downloads/input25.txt', 'r') as file:
+    with open('/Users/omid/Desktop/input25.txt', 'r') as file:
         grid = read_sudoku(file)
     size = len(grid)
+    start_time = time.time()
     if solve_sudoku(grid, size):
         print_sudoku(grid)
     else:
         print('Unsolvable CSP!')
+    end_time = time.time()
+    print("Time spent to solve:", end_time - start_time, "s")
